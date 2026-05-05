@@ -9,13 +9,12 @@ const pedidoRepository = {
         await conn.beginTransaction();
 
         const sqlItem = `INSERT INTO itens_pedidos (PedidoId, ProdutoId, Quantidade, ValorItem) VALUES (?, ?, ?, ?)`;
-        const valuesItem = [pedidoId, item.produtoId, item.quantidade, item.valorItem
-        ];
+        const valuesItem = [pedidoId, item.produtoId, item.quantidade, item.valorItem];
 
         await conn.execute(sqlItem, valuesItem);
 
         //buscar itens do pedio
-        const sqlBusca = `SELECT Quantidade, ValorItem FROM itens_pedidos WHERE PedidoId = ?`;
+        const sqlBusca = `SELECT Id, Quantidade, ValorItem FROM itens_pedidos WHERE PedidoId = ?`;
         const [itens] = await conn.execute(sqlBusca, [pedidoId]);
 
         const subTotal = itens.reduce((total, item) => total +(item.Quantidade * item.ValorItem),0); //soma o total já existente com novo valor registrado dos itens, gerando um novo subtotal
